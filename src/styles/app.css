@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .pl-inset {
+    padding-left: env(safe-area-inset-left);
+  }
+
+  .pr-inset {
+    padding-right: env(safe-area-inset-right);
+  }
+
+  .pb-inset {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}

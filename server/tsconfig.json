@@ -1,0 +1,22 @@
+{
+  "extends": "../tsconfig.node.json",
+  "compilerOptions": {
+    "outDir": "../dist",
+    "baseUrl": ".",
+    "strict": true,
+    "esModuleInterop": true,
+    "module": "Node16",
+    "moduleResolution": "node16",
+    "noEmit": false,
+    "allowImportingTsExtensions": false,
+    "listEmittedFiles": true,
+    "isolatedModules": false,
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmitOnError": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "./**/*.ts"
+  ]
+}
