@@ -10,7 +10,8 @@ import type { Question } from '../types/question.ts'
 export const useStore = defineStore('app', () => {
   const route = useRoute()
 
-  // --- control ---
+  // --- common ---
+
   const questions = ref<Question[]>([])
 
   const activeQuestionId = ref<string | null>(null)
@@ -22,6 +23,21 @@ export const useStore = defineStore('app', () => {
       }) ?? null
     }
     return null
+  })
+
+  // --- control ---
+
+  const isControl = computed<boolean>(() => {
+    return route.path.startsWith('/control')
+  })
+
+  watch(isControl, (v) => {
+    if (v) {
+      const secret = prompt('请输入控制密码：')
+      socket.emit('setControl', v, secret ?? '')
+    } else {
+      socket.emit('setControl', v, '')
+    }
   })
 
   const setActiveQuestion = (id: string | null) => {

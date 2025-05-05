@@ -28,6 +28,20 @@ io.on('connection', (socket) => {
   socket.emit('questions', database.getQuestions())
   socket.emit('activeQuestion', database.getActiveQuestion())
 
+  socket.on('setControl', (isControl, secret) => {
+    if (isControl && secret === (process.env.CONTROL_SECRET ?? '')) {
+      socket.data.userId = null
+      socket.data.userGroup = null
+      socket.join('control')
+
+      console.log('Control client connected')
+    } else if (socket.rooms.has('control')) {
+      socket.leave('control')
+
+      console.log('Control client disconnected')
+    }
+  })
+
   socket.on('setUser', (userId, userGroup) => {
     socket.data.userId = userId
     socket.data.userGroup = userGroup
@@ -99,6 +113,11 @@ io.on('connection', (socket) => {
   })
 
   socket.on('setActiveQuestion', (id) => {
+    // requires control
+    if (!socket.rooms.has('control')) {
+      return
+    }
+
     console.log(`Switching active question to #${id}`)
 
     database.setActiveQuestion(id).then(() => {
@@ -194,6 +213,11 @@ io.on('connection', (socket) => {
   })
 
   socket.on('clearData', () => {
+    // requires control
+    if (!socket.rooms.has('control')) {
+      return
+    }
+
     console.log('Clearing all data')
 
     database.clearData().then(() => {

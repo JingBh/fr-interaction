@@ -2,6 +2,7 @@ import type { Question } from './question.ts'
 import type { UserAnswer } from './database.ts'
 
 export interface ClientToServerEvents {
+  setControl: (isControl: boolean, secret: string) => void
   setUser: (userId: string, userGroup: string) => void
   setPresentation: (isPresentation: boolean) => void
   getQuestions: () => void
