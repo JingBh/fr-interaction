@@ -28,6 +28,12 @@ export const useStore = defineStore('app', () => {
     socket.emit('setActiveQuestion', id)
   }
 
+  const answersCount = ref<Record<string, number>>({})
+
+  const refreshAnswersCount = () => {
+    socket.emit('getAnswersCount')
+  }
+
   const clearData = () => {
     socket.emit('clearData')
   }
@@ -123,17 +129,23 @@ export const useStore = defineStore('app', () => {
     socket.on('valuesByGroup', (value) => {
       groupValues.value = value
     })
+
+    socket.on('answersCount', (value) => {
+      answersCount.value = value
+    })
   }
 
   return {
     activeQuestion,
     activeQuestionAnswer,
     answersByQuestion,
+    answersCount,
     bindEvents,
     clearData,
     groupAnswers,
     groupValues,
     questions,
+    refreshAnswersCount,
     refreshAnswersOf,
     refreshGroupValues,
     setActiveQuestion,

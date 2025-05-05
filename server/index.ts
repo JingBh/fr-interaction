@@ -170,6 +170,7 @@ io.on('connection', (socket) => {
         socket.emit('userAnswerByQuestion', questionId, database.getAnswerByUserAndQuestion(socket.data.userId ?? '', questionId))
         socket.emit('userAnswers', database.getAnswersByUser(socket.data.userId ?? ''))
 
+        io.emit('answersCount', database.getAnswersCount())
         io.fetchSockets().then((sockets) => {
           sockets.forEach((s) => {
             // send group their teammates' answers
@@ -188,6 +189,10 @@ io.on('connection', (socket) => {
     }
   })
 
+  socket.on('getAnswersCount', () => {
+    socket.emit('answersCount', database.getAnswersCount())
+  })
+
   socket.on('clearData', () => {
     console.log('Clearing all data')
 
@@ -195,6 +200,7 @@ io.on('connection', (socket) => {
       io.emit('activeQuestion', database.getActiveQuestion())
       io.emit('userAnswers', {})
       io.emit('valuesByGroup', {})
+      io.emit('answersCount', database.getAnswersCount())
 
       database.getQuestions().forEach((question) => {
         io.emit('userAnswerByQuestion', question.id, null)

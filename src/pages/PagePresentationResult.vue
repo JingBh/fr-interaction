@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 
 import { useStore } from '../store.ts'
 import { useTransparentBackground } from '../utils.ts'
 
 const store = useStore()
-
-store.refreshGroupValues()
 
 const data = computed<[string, number][]>(() => {
   return Object.entries(store.groupValues).sort((a, b) => {
@@ -17,6 +15,10 @@ const data = computed<[string, number][]>(() => {
 })
 
 useTransparentBackground()
+
+onMounted(() => {
+  store.refreshGroupValues()
+})
 </script>
 
 <template>

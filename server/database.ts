@@ -184,6 +184,22 @@ export default {
     })
   },
 
+  getAnswersCount: (): Record<string, number> => {
+    const result: Record<string, number> = {}
+
+    // gather answer keys
+    questions?.forEach((question) => {
+      result[question.id] = 0
+    })
+
+    // count answers
+    db?.data.answers.forEach((answer) => {
+      result[answer.questionId]++
+    })
+
+    return result
+  },
+
   updateUserGroup: async (userId: string, userGroup: string): Promise<void> => {
     await db?.update((data) => {
       data.answers.forEach((answer) => {

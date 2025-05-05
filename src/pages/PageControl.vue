@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
+
 import { useStore } from '../store.ts'
 
 const store = useStore()
@@ -20,6 +22,10 @@ const handleClear = () => {
     store.clearData()
   }
 }
+
+onMounted(() => {
+  store.refreshAnswersCount()
+})
 </script>
 
 <template>
@@ -40,6 +46,9 @@ const handleClear = () => {
             class="block text-start text-dark"
             v-text="question.title"
           />
+          <span class="block text-start text-xs text-gray-500">
+            {{ store.answersCount[question.id] ?? 0 }} 人已回答
+          </span>
         </span>
         <svg
           v-if="store.activeQuestion?.id === question.id"
